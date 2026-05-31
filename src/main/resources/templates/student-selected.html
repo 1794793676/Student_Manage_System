@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的选课</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" th:href="@{/student/home}">学生选课管理系统</a>
+    <nav class="nav-links">
+        <a th:href="@{/student/home}">首页</a>
+        <a th:href="@{/student/courses}">课程列表</a>
+        <a th:href="@{/logout}">退出登录</a>
+    </nav>
+</header>
+
+<main class="page">
+    <section class="page-heading">
+        <p class="eyebrow">Selected Courses</p>
+        <h1>我的选课</h1>
+        <p th:text="${student.name} + ' · ' + ${student.studentNo}"></p>
+    </section>
+
+    <div class="alert alert-success" th:if="${success}" th:text="${success}"></div>
+    <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
+
+    <section class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>课程名称</th>
+                <th>授课教师</th>
+                <th>学分</th>
+                <th>选课时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="selection : ${selections}">
+                <td th:text="${selection.course.courseName}"></td>
+                <td th:text="${selection.course.teacher}"></td>
+                <td th:text="${selection.course.credit}"></td>
+                <td th:text="${#temporals.format(selection.selectTime, 'yyyy-MM-dd HH:mm')}"></td>
+                <td>
+                    <form th:action="@{/student/selected/{id}/drop(id=${selection.course.id})}" method="post">
+                        <button type="submit" class="btn btn-small btn-danger">退课</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(selections)}">
+                <td colspan="5" class="empty">当前没有已选课程</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle}">课程表单</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" th:href="@{/admin/home}">学生选课管理系统</a>
+    <nav class="nav-links">
+        <a th:href="@{/admin/courses}">课程管理</a>
+        <a th:href="@{/admin/selections}">选课记录</a>
+        <a th:href="@{/logout}">退出登录</a>
+    </nav>
+</header>
+
+<main class="page page-narrow">
+    <section class="page-heading">
+        <p class="eyebrow">Course Form</p>
+        <h1 th:text="${pageTitle}"></h1>
+    </section>
+
+    <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
+
+    <form class="form-panel"
+          th:action="${course.id == null} ? @{/admin/courses} : @{/admin/courses/{id}/edit(id=${course.id})}"
+          th:object="${course}"
+          method="post">
+        <label>
+            课程名称
+            <input type="text" th:field="*{courseName}" required>
+        </label>
+        <label>
+            授课教师
+            <input type="text" th:field="*{teacher}" required>
+        </label>
+        <label>
+            学分
+            <input type="number" th:field="*{credit}" min="1" required>
+        </label>
+        <label>
+            容量
+            <input type="number" th:field="*{capacity}" min="1" required>
+        </label>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">保存</button>
+            <a th:href="@{/admin/courses}" class="btn btn-secondary">返回</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

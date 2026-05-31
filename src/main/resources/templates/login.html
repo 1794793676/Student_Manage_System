@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生选课管理系统 - 登录</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="login-page">
+<main class="login-shell">
+    <section class="login-panel">
+        <div class="brand-block">
+            <p class="eyebrow">Student Course System</p>
+            <h1>学生选课管理系统</h1>
+        </div>
+
+        <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
+
+        <form th:action="@{/login}" method="post" class="form-grid">
+            <label>
+                用户名
+                <input type="text" name="username" th:value="${username}" placeholder="请输入用户名" required>
+            </label>
+            <label>
+                密码
+                <input type="password" name="password" placeholder="请输入密码" required>
+            </label>
+            <button type="submit" class="btn btn-primary">登录</button>
+        </form>
+
+        <div class="account-note">
+            <strong>测试账号</strong>
+            <span>学生：student001 / 123456</span>
+            <span>管理员：admin / admin123</span>
+        </div>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生首页</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" th:href="@{/student/home}">学生选课管理系统</a>
+    <nav class="nav-links">
+        <a th:href="@{/student/courses}">课程列表</a>
+        <a th:href="@{/student/selected}">我的选课</a>
+        <a th:href="@{/logout}">退出登录</a>
+    </nav>
+</header>
+
+<main class="page">
+    <section class="page-heading">
+        <p class="eyebrow">Student Center</p>
+        <h1 th:text="'欢迎你，' + ${student.name}"></h1>
+        <p th:text="${student.major} + ' · ' + ${student.grade} + '级 · 学号 ' + ${student.studentNo}"></p>
+    </section>
+
+    <section class="action-grid">
+        <a class="action-tile" th:href="@{/student/courses}">
+            <strong>课程列表</strong>
+            <span>查看课程、搜索教师并提交选课</span>
+        </a>
+        <a class="action-tile" th:href="@{/student/selected}">
+            <strong>我的选课</strong>
+            <span>查看已选课程并办理退课</span>
+        </a>
+    </section>
+</main>
+</body>
+</html>

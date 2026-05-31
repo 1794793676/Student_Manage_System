@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>选课记录</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" th:href="@{/admin/home}">学生选课管理系统</a>
+    <nav class="nav-links">
+        <a th:href="@{/admin/home}">首页</a>
+        <a th:href="@{/admin/courses}">课程管理</a>
+        <a th:href="@{/logout}">退出登录</a>
+    </nav>
+</header>
+
+<main class="page">
+    <section class="page-heading">
+        <p class="eyebrow">Selection Records</p>
+        <h1>选课记录</h1>
+    </section>
+
+    <section class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>学生姓名</th>
+                <th>学号</th>
+                <th>课程名称</th>
+                <th>授课教师</th>
+                <th>选课时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="selection : ${selections}">
+                <td th:text="${selection.student.name}"></td>
+                <td th:text="${selection.student.studentNo}"></td>
+                <td th:text="${selection.course.courseName}"></td>
+                <td th:text="${selection.course.teacher}"></td>
+                <td th:text="${#temporals.format(selection.selectTime, 'yyyy-MM-dd HH:mm')}"></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(selections)}">
+                <td colspan="5" class="empty">暂无选课记录</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>

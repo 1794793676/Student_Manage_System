@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>课程列表</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" th:href="@{/student/home}">学生选课管理系统</a>
+    <nav class="nav-links">
+        <a th:href="@{/student/home}">首页</a>
+        <a th:href="@{/student/selected}">我的选课</a>
+        <a th:href="@{/logout}">退出登录</a>
+    </nav>
+</header>
+
+<main class="page">
+    <section class="toolbar">
+        <div>
+            <p class="eyebrow">Course List</p>
+            <h1>课程列表</h1>
+        </div>
+        <form th:action="@{/student/courses}" method="get" class="search-form">
+            <input type="search" name="keyword" th:value="${keyword}" placeholder="课程名称或教师">
+            <button type="submit" class="btn btn-secondary">搜索</button>
+        </form>
+    </section>
+
+    <div class="alert alert-success" th:if="${success}" th:text="${success}"></div>
+    <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
+
+    <section class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>课程编号</th>
+                <th>课程名称</th>
+                <th>授课教师</th>
+                <th>学分</th>
+                <th>容量</th>
+                <th>已选人数</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="course : ${courses}">
+                <td th:text="${course.id}"></td>
+                <td th:text="${course.courseName}"></td>
+                <td th:text="${course.teacher}"></td>
+                <td th:text="${course.credit}"></td>
+                <td th:text="${course.capacity}"></td>
+                <td>
+                    <span th:text="${course.selectedCount}"></span>
+                    <span th:if="${course.full}" class="tag tag-danger">已满</span>
+                </td>
+                <td>
+                    <form th:action="@{/student/courses/{id}/select(id=${course.id})}" method="post">
+                        <button type="submit"
+                                class="btn btn-small"
+                                th:classappend="${course.full or selectedCourseIds.contains(course.id)} ? ' btn-muted' : ' btn-primary'"
+                                th:disabled="${course.full or selectedCourseIds.contains(course.id)}"
+                                th:text="${selectedCourseIds.contains(course.id) ? '已选' : (course.full ? '已满' : '选课')}">
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(courses)}">
+                <td colspan="7" class="empty">暂无课程数据</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>

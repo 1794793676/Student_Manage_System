@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>课程管理</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" th:href="@{/admin/home}">学生选课管理系统</a>
+    <nav class="nav-links">
+        <a th:href="@{/admin/home}">首页</a>
+        <a th:href="@{/admin/selections}">选课记录</a>
+        <a th:href="@{/logout}">退出登录</a>
+    </nav>
+</header>
+
+<main class="page">
+    <section class="toolbar">
+        <div>
+            <p class="eyebrow">Course Admin</p>
+            <h1>课程管理</h1>
+        </div>
+        <a th:href="@{/admin/courses/new}" class="btn btn-primary">添加课程</a>
+    </section>
+
+    <div class="alert alert-success" th:if="${success}" th:text="${success}"></div>
+    <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
+
+    <section class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>课程编号</th>
+                <th>课程名称</th>
+                <th>授课教师</th>
+                <th>学分</th>
+                <th>容量</th>
+                <th>已选人数</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="course : ${courses}">
+                <td th:text="${course.id}"></td>
+                <td th:text="${course.courseName}"></td>
+                <td th:text="${course.teacher}"></td>
+                <td th:text="${course.credit}"></td>
+                <td th:text="${course.capacity}"></td>
+                <td th:text="${course.selectedCount}"></td>
+                <td class="row-actions">
+                    <a class="btn btn-small btn-secondary" th:href="@{/admin/courses/{id}/edit(id=${course.id})}">修改</a>
+                    <form th:action="@{/admin/courses/{id}/delete(id=${course.id})}" method="post">
+                        <button type="submit" class="btn btn-small btn-danger" onclick="return confirm('确定删除该课程吗？')">删除</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(courses)}">
+                <td colspan="7" class="empty">暂无课程数据</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>
