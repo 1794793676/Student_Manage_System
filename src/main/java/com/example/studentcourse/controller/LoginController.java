@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class LoginController {
 
+    private static final int MIN_LOGIN_LENGTH = 6;
+    private static final int MAX_LOGIN_LENGTH = 10;
+
     private final UserService userService;
 
     public LoginController(UserService userService) {
@@ -44,16 +47,21 @@ public class LoginController {
 
     @PostMapping("/login")
     public String login(
-            @RequestParam String username,
-            @RequestParam String password,
+            @RequestParam(defaultValue = "") String username,
+            @RequestParam(defaultValue = "") String password,
             HttpSession session,
             Model model
     ) {
-        Optional<User> user = userService.login(username, password);
+        String normalizedUsername = username.trim();
+        String normalizedPassword = password.trim();
+        String validationError = validateLoginInput(normalizedUsername, normalizedPassword);
+        if (validationError != null) {
+            return loginWithError(model, normalizedUsername, validationError);
+        }
+
+        Optional<User> user = userService.login(normalizedUsername, normalizedPassword);
         if (user.isEmpty()) {
-            model.addAttribute("error", "用户名或密码错误");
-            model.addAttribute("username", username);
-            return "login";
+            return loginWithError(model, normalizedUsername, "用户名或密码错误");
         }
 
         session.setAttribute(SessionKeys.CURRENT_USER, user.get());
@@ -64,6 +72,33 @@ public class LoginController {
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/login";
+    }
+
+    private String validateLoginInput(String username, String password) {
+        if (username.isEmpty()) {
+            return "用户名不能为空";
+        }
+        if (password.isEmpty()) {
+            return "密码不能为空";
+        }
+        if (!isValidLoginLength(username)) {
+            return "用户名长度必须为6-10位";
+        }
+        if (!isValidLoginLength(password)) {
+            return "密码长度必须为6-10位";
+        }
+        return null;
+    }
+
+    private boolean isValidLoginLength(String value) {
+        int length = value.length();
+        return length >= MIN_LOGIN_LENGTH && length <= MAX_LOGIN_LENGTH;
+    }
+
+    private String loginWithError(Model model, String username, String error) {
+        model.addAttribute("error", error);
+        model.addAttribute("username", username);
+        return "login";
     }
 
     private String redirectHome(User user) {

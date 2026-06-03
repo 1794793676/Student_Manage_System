@@ -41,7 +41,7 @@ public class DataInitializer implements CommandLineRunner {
             return;
         }
 
-        User admin = new User("admin", "admin123", "admin");
+        User admin = new User("admin01", "admin123", "admin");
         User studentUser1 = new User("student001", "123456", "student");
         User studentUser2 = new User("student002", "123456", "student");
         userRepository.saveAll(List.of(admin, studentUser1, studentUser2));

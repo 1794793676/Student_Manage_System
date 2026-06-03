@@ -34,7 +34,7 @@ class StudentCourseSystemApplicationTests {
     @Test
     void presetAccountsCanLogin() {
         Optional<User> student = userService.login("student001", "123456");
-        Optional<User> admin = userService.login("admin", "admin123");
+        Optional<User> admin = userService.login("admin01", "admin123");
 
         assertThat(student).isPresent();
         assertThat(student.get().isStudent()).isTrue();

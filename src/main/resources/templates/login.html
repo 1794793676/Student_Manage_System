@@ -19,19 +19,24 @@
         <form th:action="@{/login}" method="post" class="form-grid">
             <label>
                 用户名
-                <input type="text" name="username" th:value="${username}" placeholder="请输入用户名" required>
+                <input type="text" name="username" th:value="${username}" placeholder="请输入用户名"
+                       required minlength="6" maxlength="10">
             </label>
             <label>
                 密码
-                <input type="password" name="password" placeholder="请输入密码" required>
+                <input type="password" name="password" placeholder="请输入密码"
+                       required minlength="6" maxlength="10">
             </label>
-            <button type="submit" class="btn btn-primary">登录</button>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">登录</button>
+                <button type="reset" class="btn btn-secondary">取消</button>
+            </div>
         </form>
 
         <div class="account-note">
             <strong>测试账号</strong>
             <span>学生：student001 / 123456</span>
-            <span>管理员：admin / admin123</span>
+            <span>管理员：admin01 / admin123</span>
         </div>
     </section>
 </main>
